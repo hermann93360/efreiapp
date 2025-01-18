@@ -4,13 +4,13 @@ FROM golang:1.21 AS builder
 WORKDIR /app
 
 # Copier les fichiers go.mod et go.sum
-COPY webapi/go.mod webapi/go.sum ./
+COPY go.mod ./
 
 # Télécharger les dépendances
 RUN go mod download
 
 # Copier le code source
-COPY webapi/ .
+COPY . .
 
 # Compiler l'application
 RUN go build -o efreiapp
