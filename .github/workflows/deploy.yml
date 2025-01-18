@@ -11,10 +11,6 @@ jobs:
 
     steps:
 
-      - name: Set Docker permissions
-        run: |
-          sudo chmod 666 /var/run/docker.sock
-          
       # Vérifier le code source
       - name: Checkout code
         uses: actions/checkout@v3
