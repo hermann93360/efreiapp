@@ -49,3 +49,7 @@ func request1() {
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
+func whoamiHandler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintln(w, "Team Name: Hermann Talla Oussama Franck Team")
+}

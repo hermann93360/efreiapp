@@ -1,0 +1,25 @@
+name: Build and Deploy on Local Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Cloner le dépôt
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Construire l'image Docker
+      - name: Build Docker image
+        run: |
+          docker build -t efreiapp:latest .
+
+      # Exécuter le conteneur
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
