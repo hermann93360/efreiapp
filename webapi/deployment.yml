@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: efreiapp
+  namespace: development # Changez en "production" pour l'environnement de prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: efreiapp
+  template:
+    metadata:
+      labels:
+        app: efreiapp
+    spec:
+      containers:
+      - name: efreiapp
+        image: efreiapp:latest # L'image sera chargée localement avec Minikube
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Never
