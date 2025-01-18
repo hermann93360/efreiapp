@@ -21,9 +21,9 @@ jobs:
       # Construire l'image Docker
       - name: Build Docker image
         run: |
-          sudo docker build -t efreiapp:latest ./webapi
+          docker build -t efreiapp:latest ./webapi
 
       # Exécuter le conteneur Docker
       - name: Run Docker container
         run: |
-          sudo docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
+          docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
