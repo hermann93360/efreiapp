@@ -1,5 +1,5 @@
 # Étape de construction
-FROM golang:1.20 AS builder
+FROM golang:1.21 AS builder
 
 # Définir le répertoire de travail
 WORKDIR /app
