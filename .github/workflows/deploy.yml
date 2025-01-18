@@ -31,9 +31,12 @@ jobs:
         kubectl apply -f ./webapi/service.yml --namespace=development
 
     # Étape 5 : Tester l'application
+    - name: Wait for pods to be ready
+      run: |
+        kubectl wait --for=condition=ready pod -l app=efreiapp -n development --timeout=60s
+
     - name: Test Application
       run: |
-        sleep 10 # Attendre que les pods soient prêts
         APP_URL=$(minikube service efreiapp-service -n development --url)
         curl $APP_URL/whoami
 
