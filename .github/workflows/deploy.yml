@@ -37,8 +37,10 @@ jobs:
 
     - name: Test Application
       run: |
-        APP_URL=$(minikube service efreiapp-service -n development --url)
-        curl $APP_URL/whoami
+        kubectl port-forward service/efreiapp-service -n development 8080:8080 &
+        sleep 5
+        curl http://localhost:8080/whoami
+
 
     # Étape 6 : Déployer en production si le test réussit
     - name: Deploy to Production
