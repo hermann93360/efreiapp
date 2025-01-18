@@ -1,4 +1,4 @@
-name: Build and Deploy Locally
+name: Build and Deploy to Minikube
 
 on:
   push:
@@ -6,29 +6,40 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: self-hosted
 
     steps:
+    # Étape 1 : Cloner le dépôt
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Vérifier le code source
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Étape 2 : Construire l'image Docker
+    - name: Build Docker image
+      run: |
+        docker build -t efreiapp:latest ./webapi
 
-      # Configurer Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+    # Étape 3 : Charger l'image dans Minikube
+    - name: Load image into Minikube
+      run: |
+        minikube image load efreiapp:latest
 
-      - name: Remove existing container (if exists)
-        run: |
-          docker rm -f efreiapp-container || true
+    # Étape 4 : Déployer dans l'environnement de développement
+    - name: Deploy to Development
+      run: |
+        kubectl apply -f deployment.yaml --namespace=development
+        kubectl apply -f service.yaml --namespace=development
 
-      # Construire l'image Docker
-      - name: Build Docker image
-        run: |
-          docker build -t efreiapp:latest ./webapi
+    # Étape 5 : Tester l'application
+    - name: Test Application
+      run: |
+        sleep 10 # Attendre que les pods soient prêts
+        APP_URL=$(minikube service efreiapp-service -n development --url)
+        curl $APP_URL/whoami
 
-      # Exécuter le conteneur Docker
-      - name: Run Docker container
-        run: |
-          docker run -d -p 8079:8080 --name efreiapp-container efreiapp:latest
+    # Étape 6 : Déployer en production si le test réussit
+    - name: Deploy to Production
+      if: success()
+      run: |
+        kubectl apply -f deployment.yaml --namespace=production
+        kubectl apply -f service.yaml --namespace=production
