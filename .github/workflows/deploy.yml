@@ -8,10 +8,12 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+
     steps:
        - name: Set Docker permissions
         run: |
           sudo chmod 666 /var/run/docker.sock
+          
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -26,5 +28,3 @@ jobs:
         run: |
           docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
 
-sudo chmod -R 755 actions-runner
-sudo chown -R $(whoami):$(whoami) actions-runner
