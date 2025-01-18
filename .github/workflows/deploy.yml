@@ -26,4 +26,4 @@ jobs:
       # Exécuter le conteneur Docker
       - name: Run Docker container
         run: |
-          docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
+          docker run -d -p 8079:8080 --name efreiapp-container efreiapp:latest
