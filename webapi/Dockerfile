@@ -16,8 +16,7 @@ COPY . .
 RUN go build -o efreiapp
 
 # Étape finale
-# Utiliser une image Debian plus récente pour inclure GLIBC_2.34
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
 
 WORKDIR /root/
 
