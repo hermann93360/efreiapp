@@ -27,8 +27,8 @@ jobs:
     # Étape 4 : Déployer dans l'environnement de développement
     - name: Deploy to Development
       run: |
-        kubectl apply -f webapi/deployment.yaml --namespace=development
-        kubectl apply -f webapi/service.yaml --namespace=development
+        kubectl apply -f ./webapi/deployment.yaml --namespace=development
+        kubectl apply -f ./webapi/service.yaml --namespace=development
 
     # Étape 5 : Tester l'application
     - name: Test Application
@@ -41,5 +41,5 @@ jobs:
     - name: Deploy to Production
       if: success()
       run: |
-        kubectl apply -f webapi/deployment.yaml --namespace=production
-        kubectl apply -f webapi/service.yaml --namespace=production
+        kubectl apply -f ./webapi/deployment.yaml --namespace=production
+        kubectl apply -f ./webapi/service.yaml --namespace=production
