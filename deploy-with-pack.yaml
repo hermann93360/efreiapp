@@ -14,12 +14,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Étape 2 : Construire l'image Docker
-    - name: Build Docker image
+    # Étape 2 : Installer Pack CLI 
+    - name: Install Pack CLI
       run: |
-        docker build -t efreiapp:latest ./webapi
+        if [[ "$(uname -s)" == "Darwin" ]]; then
+          # macOS
+          brew install buildpacks/tap/pack || brew upgrade pack
+        elif [[ "$(uname -s)" == "Linux" ]]; then
+          # Linux
+          curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.30.0/pack-v0.30.0-linux.tgz" | tar -xzv
+          sudo mv pack /usr/local/bin/pack
+        else
+          echo "Unsupported OS"
+          exit 1
+        fi
+        pack --version
 
-    # Étape 3 : Charger l'image dans Minikube
+
+    # Étape 3 : Construire l'image avec Buildpacks
+    - name: Build Docker image using Buildpacks
+      run: |
+        pack build efreiapp:latest --builder paketobuildpacks/builder:base
+
     - name: Load image into Minikube
       run: |
         minikube image load efreiapp:latest
