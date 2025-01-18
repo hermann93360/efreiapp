@@ -14,7 +14,7 @@ jobs:
       - name: Set Docker permissions
         run: |
           sudo chmod 666 /var/run/docker.sock
-          
+
       # Vérifier le code source
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,9 +26,9 @@ jobs:
       # Construire l'image Docker
       - name: Build Docker image
         run: |
-          docker build -t efreiapp:latest ./webapi
+          sudo docker build -t efreiapp:latest ./webapi
 
       # Exécuter le conteneur Docker
       - name: Run Docker container
         run: |
-          docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
+          sudo docker run -d -p 8080:8080 --name efreiapp-container efreiapp:latest
