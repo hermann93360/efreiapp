@@ -51,5 +51,5 @@ func request1() {
 }
 
 func whoamiHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintln(w, "Team Name: Hermann Talla Oussama Franck mTeam")
+    fmt.Fprintln(w, "Team Name: Hermann Talla Oussama Franck Team")
 }
