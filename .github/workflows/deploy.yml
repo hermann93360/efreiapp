@@ -31,7 +31,7 @@ jobs:
     # Étape 4 : Déployer dans l'environnement de développement
     - name: Deploy to Development
       run: |
-        kubectl apply -f ./webapi/deployment.yml --namespace=development
+        kubectl set image deployment/efreiapp efreiapp=efreiapp:${{ steps.tag.outputs.tag }} -n development
         kubectl apply -f ./webapi/service.yml --namespace=development
 
     # Étape 5 : Tester l'application
@@ -50,5 +50,5 @@ jobs:
     - name: Deploy to Production
       if: success()
       run: |
-        kubectl apply -f ./webapi/deployment.yml --namespace=production
+        kubectl set image deployment/efreiapp efreiapp=efreiapp:${{ steps.tag.outputs.tag }} -n production
         kubectl apply -f ./webapi/service.yml --namespace=production
