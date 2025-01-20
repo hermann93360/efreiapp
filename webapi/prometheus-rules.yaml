@@ -18,5 +18,5 @@ serverFiles:
             labels:
               severity: critical
             annotations:
-              description: "High memory usage detected | send by Hermann Oussama Talla Alex Franck Team"
+              description: "High memory usage detected | send by Hermann Oussama Talla Alex franck Team"
               summary: "The pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is using more than 500 MiB of memory."
