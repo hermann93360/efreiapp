@@ -14,15 +14,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Generate Docker Image Tag
+      id: tag
+      run: echo "::set-output name=tag::$(date +%Y%m%d%H%M%S)-${GITHUB_SHA::8}"
+
     # Étape 2 : Construire l'image Docker
     - name: Build Docker image
       run: |
-        docker build -t efreiapp:latest ./webapi
+        docker build -t efreiapp:${{ steps.tag.outputs.tag }} ./webapi
 
     # Étape 3 : Charger l'image dans Minikube
     - name: Load image into Minikube
       run: |
-        minikube image load efreiapp:latest
+        minikube image load efreiapp:${{ steps.tag.outputs.tag }}
 
     # Étape 4 : Déployer dans l'environnement de développement
     - name: Deploy to Development
