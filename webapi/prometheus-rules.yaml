@@ -11,3 +11,12 @@ serverFiles:
             annotations:
               description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is not running."
               summary: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has not been running for more than 5 minutes."
+
+          - alert: HighMemory
+            expr: container_memory_working_set_bytes{pod!="",namespace!=""} > 500 * 1024 * 1024
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              description: "High memory usage detected | send by Hermann Oussama Talla Alex Franck Team"
+              summary: "The pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is using more than 500 MiB of memory."

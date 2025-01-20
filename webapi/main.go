@@ -45,11 +45,18 @@ func aboutMe(response http.ResponseWriter, r *http.Request) {
 func request1() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/aboutme", aboutMe)
-	http.HandleFunc("/whoami", whoAmI)
+	http.HandleFunc("/whoami", whoamiHandler)
+	http.HandleFunc("/error", whoamiHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func whoamiHandler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintln(w, "Team Name: Hermann Talla Oussama Franck Team")
+}
+
+func error(w http.ResponseWriter, r *http.Request) {
+    logMessage := fmt.Sprintf("ERROR: Something went wrong at %s", time.Now().Format(time.RFC3339))
+	log.Println(logMessage)
+	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 }
