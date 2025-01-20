@@ -10,23 +10,27 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    
+    # Étape 1 : Cloner le dépôt
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    # Étape 2 : Construire l'image Docker
     - name: Build Docker image
       run: |
         docker build -t efreiapp:latest ./webapi
 
+    # Étape 3 : Charger l'image dans Minikube
     - name: Load image into Minikube
       run: |
         minikube image load efreiapp:latest
 
+    # Étape 4 : Déployer dans l'environnement de développement
     - name: Deploy to Development
       run: |
         kubectl apply -f ./webapi/deployment.yml --namespace=development
         kubectl apply -f ./webapi/service.yml --namespace=development
 
+    # Étape 5 : Tester l'application
     - name: Wait for pods to be ready
       run: |
         kubectl wait --for=condition=ready pod -l app=efreiapp -n development --timeout=60s
@@ -38,6 +42,7 @@ jobs:
         curl http://localhost:8080/whoami
 
 
+    # Étape 6 : Déployer en production si le test réussit
     - name: Deploy to Production
       if: success()
       run: |
