@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: efreiapp
-        image: efreiapp:latest # L'image sera chargée localement avec Minikube
+        image: efreiapp:latest 
         ports:
         - containerPort: 8080
         imagePullPolicy: Never
